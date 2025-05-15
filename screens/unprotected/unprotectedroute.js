@@ -16,14 +16,22 @@ const Drawer = createDrawerNavigator();
 
 function HomeTab() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveBackgroundColor: "#0077b6",
+        tabBarActiveTintColor: "#fff",
+        tabBarInactiveTintColor: "#0077b6",
+        tabBarLabelStyle: { fontSize: 15 },
+        tabBarStyle: { height: 80 },
+        headerShown: false,
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          headerShown: false,
-          tabBarIcon: () => {
-            return <Entypo name="home" size={24} color="black" />;
+          tabBarIcon: ({ color, size }) => {
+            return <Entypo name="home" size={24} color={color} />;
           },
         }}
       />
@@ -31,8 +39,8 @@ function HomeTab() {
         name="About"
         component={AboutScreen}
         options={{
-          tabBarIcon: () => {
-            return <Entypo name="user" size={24} color="black" />;
+          tabBarIcon: ({ color, size }) => {
+            return <Entypo name="user" size={24} color={color} />;
           },
         }}
       />
@@ -40,8 +48,8 @@ function HomeTab() {
         name="Products"
         component={ProductScreen}
         options={{
-          tabBarIcon: () => {
-            return <FontAwesome name="product-hunt" size={24} color="black" />;
+          tabBarIcon: ({ color, size }) => {
+            return <FontAwesome name="product-hunt" size={24} color={color} />;
           },
         }}
       />
