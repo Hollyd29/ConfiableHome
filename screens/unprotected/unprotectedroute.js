@@ -22,7 +22,7 @@ function HomeTab() {
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#0077b6",
         tabBarLabelStyle: { fontSize: 15 },
-        tabBarStyle: { height: 80 },
+        // tabBarStyle: { height: 50 },
         headerShown: false,
       }}
     >
