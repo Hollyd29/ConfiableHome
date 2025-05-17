@@ -10,6 +10,7 @@ import Button from "./component/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { url } from "./utils/urlstorage";
+import { useNavigation } from "@react-navigation/native";
 
 function HomeScreen() {
   const [isGettingProduct, setIsGettingProduct] = useState(false);
@@ -45,6 +46,8 @@ function HomeScreen() {
     getProduct();
   }, []);
 
+  const navigation = useNavigation();
+
   // const newData = getThreeProducts.slice(0, 3);
   return (
     <View style={{ backgroundColor: "#caf0f8", flex: 1 }}>
@@ -69,6 +72,7 @@ function HomeScreen() {
             title="Shop Now"
             btnStyle={styles.shopnow}
             btnText={styles.shopnowText}
+            btnPress={() => navigation.navigate("Products")}
           />
         </View>
         <View>
@@ -89,6 +93,25 @@ function HomeScreen() {
               );
             })
           )}
+        </View>
+        <Button
+          title="ALL PRODUCTS"
+          btnStyle={styles.allProduct}
+          btnText={styles.allProductText}
+          btnPress={() => navigation.navigate("Products")}
+        />
+        <View>
+          <View style={styles.customCon}>
+            <Text style={styles.customHeadText}>
+              custom furniture{"\n"}built only for you
+            </Text>
+            <Text style={styles.customText}>
+              We take pride in crafting bespoke pieces that transcend the
+              ordinary. Our commitment to excellence is reflected in every
+              detail, as we believe in the art of creating 'Custom Furniture
+              Built Only For You.'
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -164,5 +187,38 @@ const styles = StyleSheet.create({
   imgText: {
     fontSize: 18,
     fontWeight: 600,
+  },
+  allProduct: {
+    backgroundColor: "#0077b6",
+    padding: 10,
+    width: 200,
+    marginInline: "auto",
+    borderRadius: 7,
+    marginBlock: 80,
+  },
+  allProductText: {
+    textAlign: "center",
+    color: "#ffff",
+    fontSize: 20,
+    fontWeight: 500,
+    letterSpacing: 2,
+  },
+  customCon: {
+    backgroundColor: "#f8f9fa",
+    paddingInline: 20,
+    paddingTop: 100,
+  },
+  customHeadText: {
+    fontSize: 30,
+    fontWeight: 800,
+    letterSpacing: 2,
+    marginBottom: 40,
+    textTransform: "capitalize",
+  },
+  customText: {
+    fontSize: 18,
+    lineHeight: 23,
+    letterSpacing: 1,
+    marginBottom: 100,
   },
 });
