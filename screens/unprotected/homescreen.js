@@ -1,7 +1,51 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Button from "./component/button";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { url } from "./utils/urlstorage";
 
 function HomeScreen() {
+  const [isGettingProduct, setIsGettingProduct] = useState(false);
+  const [getThreeProducts, setGetThreeProducts] = useState([]);
+
+  console.log(getThreeProducts);
+
+  async function getProduct() {
+    try {
+      setIsGettingProduct(true);
+      const res = await axios.get(`${url}/products`);
+      const data = res.data.products;
+
+      let newData = [];
+      for (let i = 0; i < 3; i++) {
+        const randomNumber = Math.floor(Math.random() * data.length);
+        const randomProduct = data[randomNumber];
+        newData.push(randomProduct);
+        // newData = randomProduct;
+      }
+      // console.log(newData);
+
+      setGetThreeProducts(newData);
+
+      setIsGettingProduct(false);
+    } catch (error) {
+      setIsGettingProduct(false);
+      console.log(error.response.data.message);
+    }
+  }
+
+  useEffect(() => {
+    getProduct();
+  }, []);
+
+  // const newData = getThreeProducts.slice(0, 3);
   return (
     <View style={{ backgroundColor: "#caf0f8", flex: 1 }}>
       <ScrollView>
@@ -30,6 +74,24 @@ function HomeScreen() {
         <View>
           <Text style={styles.productTitleText}>Featured Products </Text>
           <View style={styles.line}></View>
+          {isGettingProduct ? (
+            <Text>Loading</Text>
+          ) : (
+            getThreeProducts.map((each) => {
+              return (
+                <View key={each._id}>
+                  <Image
+                    source={{ uri: each.image }}
+                    style={{ width: 100, height: 100 }}
+                  />
+                  <View>
+                    <Text>{each.type}</Text>
+                    <Text>$ {each.price}</Text>
+                  </View>
+                </View>
+              );
+            })
+          )}
         </View>
       </ScrollView>
     </View>
