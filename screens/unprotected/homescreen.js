@@ -15,7 +15,7 @@ function HomeScreen() {
   const [isGettingProduct, setIsGettingProduct] = useState(false);
   const [getThreeProducts, setGetThreeProducts] = useState([]);
 
-  console.log(getThreeProducts);
+  // console.log(getThreeProducts);
 
   async function getProduct() {
     try {
@@ -80,13 +80,10 @@ function HomeScreen() {
             getThreeProducts.map((each) => {
               return (
                 <View key={each._id}>
-                  <Image
-                    source={{ uri: each.image }}
-                    style={{ width: 100, height: 100 }}
-                  />
-                  <View>
-                    <Text>{each.type}</Text>
-                    <Text>$ {each.price}</Text>
+                  <Image source={{ uri: each.image }} style={styles.homeimg} />
+                  <View style={styles.imgTextCon}>
+                    <Text style={styles.imgText}>{each.type}</Text>
+                    <Text style={styles.imgText}>$ {each.price}</Text>
                   </View>
                 </View>
               );
@@ -147,5 +144,25 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 70,
     marginInline: "auto",
+  },
+  homeimg: {
+    width: "90%",
+    height: 200,
+    marginInline: "auto",
+    marginTop: 30,
+    borderRadius: 8,
+  },
+  imgTextCon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "90%",
+    marginInline: "auto",
+    marginTop: 10,
+  },
+  imgText: {
+    fontSize: 18,
+    fontWeight: 600,
   },
 });
