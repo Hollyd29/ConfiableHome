@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 function HomeScreen() {
   const [isGettingProduct, setIsGettingProduct] = useState(false);
   const [getThreeProducts, setGetThreeProducts] = useState([]);
+  const [isShowMission, setIsShowMission] = useState(false);
 
   // console.log(getThreeProducts);
 
@@ -117,8 +118,8 @@ function HomeScreen() {
             style={{
               backgroundColor: "#0077b6",
               padding: 30,
-
-              marginInline: "auto",
+              alignSelf: "center",
+              borderRadius: 10,
             }}
           >
             {/* the circle start */}
@@ -132,20 +133,24 @@ function HomeScreen() {
               individuals to elevate their living spaces with comfort and style.
               We strive to curate a diverse collection of high-quality products
               that seamlessly blend form and function, enabling our customers to
-              design their <Text>...</Text>{" "}
-              <Text>
-                ideal comfort zones. With a commitment to exceptional customer
-                service and a passion for delivering unparalleled shopping
-                experiences, we aim to be the go-to destination for those
-                seeking not just products, but a personalized expression of
-                their unique lifestyle. Join us in the pursuit of creating
-                spaces that embrace tranquility, warmth, and individuality –
-                because your comfort is our mission.
-              </Text>{" "}
-              <Pressable>
-                {" "}
-                <Text>read more</Text> <Text>read less</Text>{" "}
-              </Pressable>
+              design their {!isShowMission && <Text>...</Text>}{" "}
+              {isShowMission && (
+                <Text>
+                  ideal comfort zones. With a commitment to exceptional customer
+                  service and a passion for delivering unparalleled shopping
+                  experiences, we aim to be the go-to destination for those
+                  seeking not just products, but a personalized expression of
+                  their unique lifestyle. Join us in the pursuit of creating
+                  spaces that embrace tranquility, warmth, and individuality –
+                  because your comfort is our mission.
+                </Text>
+              )}{" "}
+              <Text
+                onPress={() => setIsShowMission(!isShowMission)}
+                style={styles.read}
+              >
+                {isShowMission ? "read less" : "read more"}
+              </Text>
             </Text>
           </View>
         </View>
@@ -179,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0077b6",
     padding: 10,
     width: 150,
-    marginInline: "auto",
+    alignSelf: "center",
     borderRadius: 7,
     marginBottom: 50,
   },
@@ -202,12 +207,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#0077b6",
     marginTop: 10,
     marginBottom: 70,
-    marginInline: "auto",
+    alignSelf: "center",
   },
   homeimg: {
     width: "90%",
     height: 200,
-    marginInline: "auto",
+    alignSelf: "center",
     marginTop: 30,
     borderRadius: 8,
   },
@@ -217,7 +222,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: "90%",
-    marginInline: "auto",
+    alignSelf: "center",
     marginTop: 10,
   },
   imgText: {
@@ -228,7 +233,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0077b6",
     padding: 10,
     width: 200,
-    marginInline: "auto",
+    alignSelf: "center",
     borderRadius: 7,
     marginBlock: 80,
   },
@@ -262,7 +267,7 @@ const styles = StyleSheet.create({
     width: 65,
     borderRadius: 50,
     backgroundColor: "#0096c7",
-    marginInline: "auto",
+    alignSelf: "center",
     marginBottom: 10,
   },
   smallCircle: {
@@ -270,21 +275,26 @@ const styles = StyleSheet.create({
     width: 40,
     borderRadius: 50,
     backgroundColor: "#0077b6",
-    marginInline: "auto",
+    alignSelf: "center",
     marginBlock: "auto",
   },
   misVisHeadText: {
     color: "#ffffff",
     fontSize: 40,
     fontWeight: 800,
-    marginInline: "auto",
+    alignSelf: "center",
     letterSpacing: 2,
   },
   misVisText: {
     color: "#ffffff",
-    fontSize: 20,
+    fontSize: 21,
     lineHeight: 24,
     textAlign: "center",
     marginBottom: 5,
+  },
+  read: {
+    color: "#212529",
+    fontSize: 24,
+    fontWeight: "500",
   },
 });
