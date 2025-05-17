@@ -17,6 +17,7 @@ function HomeScreen() {
   const [isGettingProduct, setIsGettingProduct] = useState(false);
   const [getThreeProducts, setGetThreeProducts] = useState([]);
   const [isShowMission, setIsShowMission] = useState(false);
+  const [isShowVission, setIsShowVission] = useState(false);
 
   // console.log(getThreeProducts);
 
@@ -114,14 +115,7 @@ function HomeScreen() {
               Built Only For You.'
             </Text>
           </View>
-          <View
-            style={{
-              backgroundColor: "#0077b6",
-              padding: 30,
-              alignSelf: "center",
-              borderRadius: 10,
-            }}
-          >
+          <View style={styles.misVisCon}>
             {/* the circle start */}
             <View style={styles.bigCircle}>
               <View style={styles.smallCircle}></View>
@@ -150,6 +144,40 @@ function HomeScreen() {
                 style={styles.read}
               >
                 {isShowMission ? "read less" : "read more"}
+              </Text>
+            </Text>
+          </View>
+          <View style={styles.misVisCon}>
+            {/* the circle start */}
+            <View style={styles.bigCircle}>
+              <View style={styles.smallCircle}></View>
+            </View>
+            {/* {the circle end} */}
+            <Text style={styles.misVisHeadText}>Vission</Text>
+            <Text style={styles.misVisText}>
+              At ComfiableHomes, we envision a future where the act of designing
+              one's comfort zone becomes a transformative and delightful
+              journey. Our vision is to be the ultimate destination for
+              individuals seeking a harmonious blend of style and comfort{" "}
+              {!isShowVission && <Text>...</Text>}{" "}
+              {isShowVission && (
+                <Text>
+                  in every facet of their lives. We strive to continually
+                  innovate, offering an evolving array of curated products that
+                  not only meet but exceed the evolving needs and desires of our
+                  customers. As we grow, we aspire to become a trusted source,
+                  fostering a community that shares a passion for creating
+                  spaces that not only reflect personal style but also evoke a
+                  sense of joy, relaxation, and well-being. At ComfiableHomes,
+                  we believe in empowering everyone to design a life of comfort
+                  and sophistication, making every home a haven.
+                </Text>
+              )}{" "}
+              <Text
+                onPress={() => setIsShowVission(!isShowVission)}
+                style={styles.read}
+              >
+                {isShowVission ? "read less" : "read more"}
               </Text>
             </Text>
           </View>
@@ -262,6 +290,13 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginBottom: 100,
   },
+  misVisCon: {
+    backgroundColor: "#0077b6",
+    padding: 30,
+    alignSelf: "center",
+    borderRadius: 10,
+    marginBottom: 50,
+  },
   bigCircle: {
     height: 65,
     width: 65,
@@ -287,7 +322,7 @@ const styles = StyleSheet.create({
   },
   misVisText: {
     color: "#ffffff",
-    fontSize: 21,
+    fontSize: 18,
     lineHeight: 24,
     textAlign: "center",
     marginBottom: 5,
