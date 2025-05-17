@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import Button from "./component/button";
@@ -18,6 +19,7 @@ function HomeScreen() {
   const [getThreeProducts, setGetThreeProducts] = useState([]);
   const [isShowMission, setIsShowMission] = useState(false);
   const [isShowVission, setIsShowVission] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
 
   // console.log(getThreeProducts);
 
@@ -182,6 +184,29 @@ function HomeScreen() {
             </Text>
           </View>
         </View>
+        <View style={{ marginTop: 70, paddingHorizontal: 20 }}>
+          <Text style={styles.newsHeadText}>
+            Join our newsletter and get 20% off
+          </Text>
+          <Text style={styles.newsText}>
+            Embark on a journey to elevate your comfort and style. Explore our
+            curated collection at ComfiableHomes and transform your living
+            spaces into havens of personal luxury.
+          </Text>
+          <View style={styles.inputCon}>
+            <TextInput
+              value={emailInput}
+              placeholder="Enter Email"
+              onChangeText={(value) => setEmailInput(value)}
+              style={styles.input}
+            />
+            <Button
+              title="Subscribe"
+              btnStyle={styles.emailBtn}
+              btnText={styles.emailText}
+            />
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -331,5 +356,39 @@ const styles = StyleSheet.create({
     color: "#212529",
     fontSize: 24,
     fontWeight: "500",
+  },
+  newsHeadText: {
+    fontSize: 40,
+    fontWeight: 700,
+    marginBottom: 20,
+    letterSpacing: 2,
+  },
+  newsText: {
+    fontSize: 20,
+    lineHeight: 27,
+    marginBottom: 20,
+  },
+  inputCon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 80,
+  },
+  input: {
+    borderWidth: 2,
+    borderColor: "#495057",
+    height: 40,
+    width: "75%",
+  },
+  emailBtn: {
+    backgroundColor: "#0077b6",
+    height: 40,
+    // width: 100,
+    padding: 10,
+  },
+  emailText: {
+    color: "#ffffff",
+    fontSize: 18,
+    textAlign: "center",
   },
 });
