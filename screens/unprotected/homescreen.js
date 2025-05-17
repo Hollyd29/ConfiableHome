@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -100,8 +101,8 @@ function HomeScreen() {
           btnText={styles.allProductText}
           btnPress={() => navigation.navigate("Products")}
         />
-        <View>
-          <View style={styles.customCon}>
+        <View style={styles.customCon}>
+          <View>
             <Text style={styles.customHeadText}>
               custom furniture{"\n"}built only for you
             </Text>
@@ -110,6 +111,41 @@ function HomeScreen() {
               ordinary. Our commitment to excellence is reflected in every
               detail, as we believe in the art of creating 'Custom Furniture
               Built Only For You.'
+            </Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: "#0077b6",
+              padding: 30,
+
+              marginInline: "auto",
+            }}
+          >
+            {/* the circle start */}
+            <View style={styles.bigCircle}>
+              <View style={styles.smallCircle}></View>
+            </View>
+            {/* {the circle end} */}
+            <Text style={styles.misVisHeadText}>Mission</Text>
+            <Text style={styles.misVisText}>
+              At ComfiableHomes, our mission is to inspire and empower
+              individuals to elevate their living spaces with comfort and style.
+              We strive to curate a diverse collection of high-quality products
+              that seamlessly blend form and function, enabling our customers to
+              design their <Text>...</Text>{" "}
+              <Text>
+                ideal comfort zones. With a commitment to exceptional customer
+                service and a passion for delivering unparalleled shopping
+                experiences, we aim to be the go-to destination for those
+                seeking not just products, but a personalized expression of
+                their unique lifestyle. Join us in the pursuit of creating
+                spaces that embrace tranquility, warmth, and individuality –
+                because your comfort is our mission.
+              </Text>{" "}
+              <Pressable>
+                {" "}
+                <Text>read more</Text> <Text>read less</Text>{" "}
+              </Pressable>
             </Text>
           </View>
         </View>
@@ -212,7 +248,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 800,
     letterSpacing: 2,
-    marginBottom: 40,
+    marginBottom: 20,
     textTransform: "capitalize",
   },
   customText: {
@@ -220,5 +256,35 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     letterSpacing: 1,
     marginBottom: 100,
+  },
+  bigCircle: {
+    height: 65,
+    width: 65,
+    borderRadius: 50,
+    backgroundColor: "#0096c7",
+    marginInline: "auto",
+    marginBottom: 10,
+  },
+  smallCircle: {
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    backgroundColor: "#0077b6",
+    marginInline: "auto",
+    marginBlock: "auto",
+  },
+  misVisHeadText: {
+    color: "#ffffff",
+    fontSize: 40,
+    fontWeight: 800,
+    marginInline: "auto",
+    letterSpacing: 2,
+  },
+  misVisText: {
+    color: "#ffffff",
+    fontSize: 20,
+    lineHeight: 24,
+    textAlign: "center",
+    marginBottom: 5,
   },
 });
