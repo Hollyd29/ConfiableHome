@@ -5,8 +5,8 @@ import Button from "./component/button";
 function ProductScreen() {
   return (
     <View>
-      <View>
-        <View>
+      <View style={styles.headerCon}>
+        <View style={styles.searchCon}>
           <TextInput placeholder="Search" style={styles.search} />
           <Button
             title="Search"
@@ -27,23 +27,38 @@ function ProductScreen() {
 export default ProductScreen;
 
 const styles = StyleSheet.create({
+  headerCon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    marginTop: 10,
+  },
   filter: {
     borderWidth: 1,
     borderColor: "#343a40",
     fontSize: 20,
-    padding: 10,
+    padding: 7,
     width: 100,
-    alignSelf: "flex-end",
+    borderRadius: 6,
+  },
+  searchCon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    // marginLeft: 10,
   },
   search: {
     borderWidth: 2,
     borderColor: "#343a40",
+    height: 40,
+    width: 150,
   },
   searchBtn: {
     backgroundColor: "#0077b6",
-    padding: 10,
+    padding: 8,
     width: 100,
-    borderRadius: 7,
   },
   searchText: {
     textAlign: "center",
