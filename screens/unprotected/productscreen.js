@@ -17,6 +17,28 @@ function ProductScreen() {
   const [isShow, setIsShow] = useState(false);
   const [allProduct, setAllProduct] = useState([]);
   const [isLoeading, setIsLoading] = useState(false);
+  const [pickProduct, setPickProduct] = useState([]);
+
+  function handlePress(value) {
+    if (value === "All") {
+      setPickProduct(allProduct);
+    } else if (value === "Office") {
+      setPickProduct(allProduct.filter((item) => item.category === "Office"));
+    } else if (value === "Living Room") {
+      setPickProduct(
+        allProduct.filter((item) => item.category === "Living Room")
+      );
+    } else if (value === "Kitchen") {
+      setPickProduct(allProduct.filter((item) => item.category === "Kitchen"));
+    } else if (value === "Bedroom") {
+      setPickProduct(allProduct.filter((item) => item.category === "Bedroom"));
+    } else if (value === "Dining") {
+      setPickProduct(allProduct.filter((item) => item.category === "Dining"));
+    } else {
+      setPickProduct(allProduct.filter((item) => item.category === "Kids"));
+    }
+    setIsShow(!isShow);
+  }
 
   async function getAllProduct() {
     try {
@@ -34,6 +56,10 @@ function ProductScreen() {
   useEffect(() => {
     getAllProduct();
   }, []);
+
+  useEffect(() => {
+    setPickProduct(allProduct);
+  }, [allProduct]);
 
   return (
     <View>
@@ -56,13 +82,48 @@ function ProductScreen() {
         <View style={styles.filterOptCon}>
           <View>
             <Text style={styles.CatCom}>Category</Text>
-            <Text style={styles.categoryList}>All</Text>
-            <Text style={styles.categoryList}>Office</Text>
-            <Text style={styles.categoryList}>Living Room</Text>
-            <Text style={styles.categoryList}>Kitchen</Text>
-            <Text style={styles.categoryList}>Bedroom</Text>
-            <Text style={styles.categoryList}>Dining Room</Text>
-            <Text style={styles.categoryList}>Kids</Text>
+            <Text
+              style={styles.categoryList}
+              onPress={() => handlePress("All")}
+            >
+              All
+            </Text>
+            <Text
+              style={styles.categoryList}
+              onPress={() => handlePress("Office")}
+            >
+              Office
+            </Text>
+            <Text
+              style={styles.categoryList}
+              onPress={() => handlePress("Living Room")}
+            >
+              Living Room
+            </Text>
+            <Text
+              style={styles.categoryList}
+              onPress={() => handlePress("Kitchen")}
+            >
+              Kitchen
+            </Text>
+            <Text
+              style={styles.categoryList}
+              onPress={() => handlePress("Bedroom")}
+            >
+              Bedroom
+            </Text>
+            <Text
+              style={styles.categoryList}
+              onPress={() => handlePress("Dining Room")}
+            >
+              Dining Room
+            </Text>
+            <Text
+              style={styles.categoryList}
+              onPress={() => handlePress("Kids")}
+            >
+              Kids
+            </Text>
             <Button
               title="Clear Filters"
               btnStyle={styles.clearFilter}
@@ -75,14 +136,21 @@ function ProductScreen() {
           </View>
         </View>
       )}
-      <Text>22 products found</Text>
-      <Text>Sort By:</Text>
-      <View style={{ backgroundColor: "#edf3ee", paddingBottom: 250 }}>
+      {isLoeading ? (
+        <Text></Text>
+      ) : (
+        <View style={{ marginLeft: 10 }}>
+          <Text>{pickProduct.length} products found</Text>
+          <Text>Sort By:</Text>
+        </View>
+      )}
+
+      <View style={{ backgroundColor: "#edf3ee", paddingBottom: 200 }}>
         {isLoeading ? (
           <Text>Loading...</Text>
         ) : (
           <FlatList
-            data={allProduct}
+            data={pickProduct}
             renderItem={(each) => {
               return (
                 <View>
@@ -100,6 +168,7 @@ function ProductScreen() {
             keyExtractor={(each) => each._id}
           />
         )}
+        {/* <View style={{ marginTop: -200 }}></View> */}
       </View>
     </View>
   );
