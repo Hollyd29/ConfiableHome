@@ -1,10 +1,39 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Button from "./component/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { url } from "./utils/urlstorage";
 
 function ProductScreen() {
   const [isShow, setIsShow] = useState(false);
+  const [allProduct, setAllProduct] = useState([]);
+  const [isLoeading, setIsLoading] = useState(false);
+
+  async function getAllProduct() {
+    try {
+      setIsLoading(true);
+      const res = await axios.get(`${url}/products`);
+      setAllProduct(res.data.products);
+      // console.log(res.data.products);
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getAllProduct();
+  }, []);
 
   return (
     <View>
@@ -46,6 +75,32 @@ function ProductScreen() {
           </View>
         </View>
       )}
+      <Text>22 products found</Text>
+      <Text>Sort By:</Text>
+      <View style={{ backgroundColor: "#edf3ee", paddingBottom: 250 }}>
+        {isLoeading ? (
+          <Text>Loading...</Text>
+        ) : (
+          <FlatList
+            data={allProduct}
+            renderItem={(each) => {
+              return (
+                <View>
+                  <Image
+                    source={{ uri: each.item.image }}
+                    style={styles.productImg}
+                  />
+                  <View style={styles.imgTextCon}>
+                    <Text style={styles.imgText}>{each.item.type}</Text>
+                    <Text style={styles.imgText}>$ {each.item.price}</Text>
+                  </View>
+                </View>
+              );
+            }}
+            keyExtractor={(each) => each._id}
+          />
+        )}
+      </View>
     </View>
   );
 }
@@ -133,5 +188,25 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: "#fff",
     marginTop: 10,
+  },
+  productImg: {
+    width: "90%",
+    height: 200,
+    alignSelf: "center",
+    marginTop: 30,
+    borderRadius: 8,
+  },
+  imgTextCon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "90%",
+    alignSelf: "center",
+    marginTop: 10,
+  },
+  imgText: {
+    fontSize: 18,
+    fontWeight: 600,
   },
 });
