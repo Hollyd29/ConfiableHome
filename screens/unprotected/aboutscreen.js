@@ -1,9 +1,13 @@
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
+import image from "../../assets/image/about_img.jpeg";
 
 function AboutScreen() {
   return (
     <View>
-      <Text>thsi is about sreen</Text>
+      <Image
+        source={image}
+        style={{ height: 300, width: "90%", alignSelf: "center" }}
+      />
     </View>
   );
 }

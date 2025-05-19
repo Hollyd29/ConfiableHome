@@ -168,7 +168,6 @@ function ProductScreen() {
             keyExtractor={(each) => each._id}
           />
         )}
-        {/* <View style={{ marginTop: -200 }}></View> */}
       </View>
     </View>
   );
