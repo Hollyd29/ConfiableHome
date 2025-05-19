@@ -1,10 +1,11 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "../component/button";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import axios from "axios";
 import { url } from "../utils/urlstorage";
 import Toast from "react-native-toast-message";
+import Entypo from "@expo/vector-icons/Entypo";
 
 function RegisterScreen() {
   const registerData = {
@@ -14,6 +15,7 @@ function RegisterScreen() {
   };
   const [register, setRegister] = useState(registerData);
   const [isloading, setIsLoading] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
   const navigation = useNavigation();
 
@@ -79,13 +81,19 @@ function RegisterScreen() {
           value={email}
           onChangeText={(value) => handleText(value, "email")}
         />
-        <TextInput
-          secureTextEntry={false}
-          placeholder="Password"
-          style={styles.input}
-          value={password}
-          onChangeText={(value) => handleText(value, "password")}
-        />
+        <View style={{ position: "relative" }}>
+          <TextInput
+            secureTextEntry={isShow}
+            placeholder="Password"
+            style={styles.input}
+            value={password}
+            onChangeText={(value) => handleText(value, "password")}
+          />
+          <Pressable style={styles.icons} onPress={() => setIsShow(!isShow)}>
+            {!isShow && <Entypo name="eye" size={24} color="black" />}
+            {isShow && <Entypo name="eye-with-line" size={24} color="black" />}
+          </Pressable>
+        </View>
         <Button
           title="Register"
           btnStyle={styles.btn}
@@ -145,5 +153,12 @@ const styles = StyleSheet.create({
   },
   register: {
     color: "#1565c0",
+  },
+  icons: {
+    position: "absolute",
+    right: 20,
+    top: "50%",
+    transform: [{ translateY: "-50%" }],
+    opacity: 0.6,
   },
 });

@@ -1,7 +1,8 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "../component/button";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import Entypo from "@expo/vector-icons/Entypo";
 
 function LoginScreen() {
   const loginData = {
@@ -9,9 +10,10 @@ function LoginScreen() {
     password: "",
   };
   const [login, setLogin] = useState(loginData);
-  const { email, password } = login;
+  const [isShow, setIsShow] = useState(false);
 
   const navigation = useNavigation();
+  const { email, password } = login;
 
   return (
     <View>
@@ -22,12 +24,18 @@ function LoginScreen() {
           style={styles.input}
           value={email}
         />
-        <TextInput
-          secureTextEntry={false}
-          placeholder="Password"
-          style={styles.input}
-          value={password}
-        />
+        <View>
+          <TextInput
+            secureTextEntry={false}
+            placeholder="Password"
+            style={styles.input}
+            value={password}
+          />
+          <Pressable style={styles.icons} onPress={() => setIsShow(!isShow)}>
+            {!isShow && <Entypo name="eye" size={24} color="black" />}
+            {isShow && <Entypo name="eye-with-line" size={24} color="black" />}
+          </Pressable>
+        </View>
         <Button title="Login" btnStyle={styles.btn} btnText={styles.btntext} />
       </View>
       <Text style={styles.text}>
@@ -81,5 +89,12 @@ const styles = StyleSheet.create({
   },
   register: {
     color: "#1565c0",
+  },
+  icons: {
+    position: "absolute",
+    right: 20,
+    top: "50%",
+    transform: [{ translateY: "-50%" }],
+    opacity: 0.6,
   },
 });
