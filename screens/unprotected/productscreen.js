@@ -12,6 +12,7 @@ import Button from "./component/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { url } from "./utils/urlstorage";
+import LoadingIcon from "./utils/loadingicon";
 
 function ProductScreen() {
   const [isShow, setIsShow] = useState(false);
@@ -147,7 +148,9 @@ function ProductScreen() {
 
       <View style={{ backgroundColor: "#edf3ee", paddingBottom: 200 }}>
         {isLoeading ? (
-          <Text>Loading...</Text>
+          <View style={{ alignSelf: "center", marginTop: "50%" }}>
+            <LoadingIcon />
+          </View>
         ) : (
           <FlatList
             data={pickProduct}

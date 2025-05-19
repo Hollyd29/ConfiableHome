@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { url } from "./utils/urlstorage";
 import { useNavigation } from "@react-navigation/native";
+import LoadingIcon from "./utils/loadingicon";
 
 function HomeScreen() {
   const [isGettingProduct, setIsGettingProduct] = useState(false);
@@ -84,7 +85,9 @@ function HomeScreen() {
           <Text style={styles.productTitleText}>Featured Products </Text>
           <View style={styles.line}></View>
           {isGettingProduct ? (
-            <Text>Loading</Text>
+            <View style={{ alignSelf: "center", marginTop: 100 }}>
+              <LoadingIcon />
+            </View>
           ) : (
             getThreeProducts.map((each) => {
               return (
