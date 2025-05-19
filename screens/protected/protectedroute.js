@@ -17,7 +17,8 @@ function ProtectedRoute() {
         name="Register"
         component={RegisterScreen}
         options={{
-          title: "Register",
+          headerBackVisible: false,
+          headerTitleAlign: "center",
         }}
       />
     </Stack.Navigator>

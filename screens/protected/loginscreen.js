@@ -1,14 +1,33 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "../component/button";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 function LoginScreen() {
+  const loginData = {
+    email: "",
+    password: "",
+  };
+  const [login, setLogin] = useState(loginData);
+  const { email, password } = login;
+
   const navigation = useNavigation();
+
   return (
     <View>
       <View style={styles.loginCon}>
-        <TextInput placeholder="Email address" style={styles.input} />
-        <TextInput placeholder="Password" style={styles.input} />
+        <TextInput
+          keyboardType="email-address"
+          placeholder="Email address"
+          style={styles.input}
+          value={email}
+        />
+        <TextInput
+          secureTextEntry={false}
+          placeholder="Password"
+          style={styles.input}
+          value={password}
+        />
         <Button title="Login" btnStyle={styles.btn} btnText={styles.btntext} />
       </View>
       <Text style={styles.text}>
@@ -37,8 +56,9 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 2,
     borderColor: "#7f7f7f",
-    height: 40,
+    height: 45,
     borderRadius: 7,
+    fontSize: 18,
   },
   btn: {
     backgroundColor: "#0077b6",
