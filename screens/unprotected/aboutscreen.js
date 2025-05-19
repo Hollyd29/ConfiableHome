@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import image from "../../assets/image/about_img.jpeg";
 
 function AboutScreen() {
