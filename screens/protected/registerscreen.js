@@ -4,8 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import axios from "axios";
 import { url } from "../utils/urlstorage";
-import Toast from "react-native-toast-message";
 import Entypo from "@expo/vector-icons/Entypo";
+import Toast from "react-native-toast-message";
 
 function RegisterScreen() {
   const registerData = {
@@ -29,7 +29,6 @@ function RegisterScreen() {
   }
 
   async function handleRegister() {
-    console.log("im clicked");
     if (!username || !email || !password) {
       Toast.show({
         type: "error",
@@ -51,6 +50,7 @@ function RegisterScreen() {
         visibilityTime: 3000,
         text2Style: { fontSize: 16 },
       });
+      setRegister(registerData);
       navigation.navigate("Login");
       setIsLoading(false);
     } catch (error) {
@@ -95,7 +95,8 @@ function RegisterScreen() {
           </Pressable>
         </View>
         <Button
-          title="Register"
+          title={isloading ? "Loading..." : "Register"}
+          disablebtn={isloading}
           btnStyle={styles.btn}
           btnText={styles.btntext}
           btnPress={handleRegister}
@@ -111,7 +112,6 @@ function RegisterScreen() {
           Login
         </Text>{" "}
       </Text>
-      <Toast />
     </View>
   );
 }

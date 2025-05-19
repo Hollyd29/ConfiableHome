@@ -3,6 +3,9 @@ import Button from "../component/button";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
+import axios from "axios";
+import { url } from "../utils/urlstorage";
+import Toast from "react-native-toast-message";
 
 function LoginScreen() {
   const loginData = {
@@ -11,9 +14,54 @@ function LoginScreen() {
   };
   const [login, setLogin] = useState(loginData);
   const [isShow, setIsShow] = useState(false);
+  const [isloading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
   const { email, password } = login;
+
+  function handleText(value, name) {
+    setLogin((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  async function handleLogin() {
+    if (!email || !password) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "No field can be empty",
+        visibilityTime: 3000,
+        text2Style: { fontSize: 16 },
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const res = await axios.post(`${url}/auth/login`, login);
+      Toast.show({
+        type: "success",
+        text1: "Successful",
+        text2: "Login Successful",
+        visibilityTime: 3000,
+        text2Style: { fontSize: 16 },
+      });
+      setLogin(loginData);
+      navigation.navigate("Products");
+      setIsLoading(false);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error.response.data.message || "something went wrong",
+        visibilityTime: 3000,
+        text2Style: { fontSize: 16 },
+      });
+      setIsLoading(false);
+    }
+  }
 
   return (
     <View>
@@ -23,20 +71,28 @@ function LoginScreen() {
           placeholder="Email address"
           style={styles.input}
           value={email}
+          onChangeText={(value) => handleText(value, "email")}
         />
         <View>
           <TextInput
-            secureTextEntry={false}
+            secureTextEntry={isShow}
             placeholder="Password"
             style={styles.input}
             value={password}
+            onChangeText={(value) => handleText(value, "password")}
           />
           <Pressable style={styles.icons} onPress={() => setIsShow(!isShow)}>
             {!isShow && <Entypo name="eye" size={24} color="black" />}
             {isShow && <Entypo name="eye-with-line" size={24} color="black" />}
           </Pressable>
         </View>
-        <Button title="Login" btnStyle={styles.btn} btnText={styles.btntext} />
+        <Button
+          title={isloading ? "Loading..." : "Login"}
+          disablebtn={isloading}
+          btnStyle={styles.btn}
+          btnText={styles.btntext}
+          btnPress={handleLogin}
+        />
       </View>
       <Text style={styles.text}>
         You don't have an account ?
