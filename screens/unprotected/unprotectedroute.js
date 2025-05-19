@@ -1,16 +1,18 @@
 import "react-native-gesture-handler";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "./homescreen";
 import AboutScreen from "./aboutscreen";
 import ProductScreen from "./productscreen";
 import CartScreen from "./cartscreen";
-import UserScreen from "./userscreen";
+// import UserScreen from "./protected/userscreen";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+// import ProfileScreen from "../protected/profilescreen";
+import ProtectedRoute from "../protected/protectedroute";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
-const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -67,7 +69,7 @@ function UnprotectedRoute() {
           headerTitleAlign: "center",
           headerTintColor: "#0077b6",
           headerTitleStyle: { fontSize: 30 },
-          drawerLabelStyle: { fontSize: 30 },
+          drawerLabelStyle: { fontSize: 30, paddingTop: 10 },
           // drawerInactiveTintColor: "#0077b6",
         }}
       />
@@ -82,11 +84,15 @@ function UnprotectedRoute() {
       />
       <Drawer.Screen
         name="User"
-        component={UserScreen}
-        options={{
-          drawerIcon: () => {
-            return <Entypo name="users" size={24} color="black" />;
-          },
+        component={ProtectedRoute}
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? "Login";
+          return {
+            headerShown: routeName !== "Register",
+            drawerIcon: () => {
+              return <Entypo name="users" size={24} color="black" />;
+            },
+          };
         }}
       />
     </Drawer.Navigator>
