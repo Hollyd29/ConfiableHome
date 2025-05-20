@@ -8,17 +8,20 @@ import {
   View,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import Button from "./component/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { url } from "./utils/urlstorage";
-import LoadingIcon from "./utils/loadingicon";
+import LoadingIcon from "../utils/loadingicon";
+import Button from "../component/button";
+import { url } from "../utils/urlstorage";
+import { useNavigation } from "@react-navigation/native";
 
 function ProductScreen() {
   const [isShow, setIsShow] = useState(false);
   const [allProduct, setAllProduct] = useState([]);
   const [isLoeading, setIsLoading] = useState(false);
   const [pickProduct, setPickProduct] = useState([]);
+
+  const navigation = useNavigation();
 
   function handlePress(value) {
     if (value === "All") {
@@ -63,7 +66,7 @@ function ProductScreen() {
   }, [allProduct]);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.headerCon}>
         <View style={styles.searchCon}>
           <TextInput placeholder="Search" style={styles.search} />
@@ -155,8 +158,16 @@ function ProductScreen() {
           <FlatList
             data={pickProduct}
             renderItem={(each) => {
+              // console.log(each);
+
               return (
-                <View>
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("SingleProduct", {
+                      productId: each.item._id,
+                    })
+                  }
+                >
                   <Image
                     source={{ uri: each.item.image }}
                     style={styles.productImg}
@@ -165,7 +176,7 @@ function ProductScreen() {
                     <Text style={styles.imgText}>{each.item.type}</Text>
                     <Text style={styles.imgText}>$ {each.item.price}</Text>
                   </View>
-                </View>
+                </Pressable>
               );
             }}
             keyExtractor={(each) => each._id}

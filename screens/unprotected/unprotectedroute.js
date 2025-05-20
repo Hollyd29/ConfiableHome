@@ -4,17 +4,39 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "./homescreen";
 import AboutScreen from "./aboutscreen";
-import ProductScreen from "./productscreen";
 import CartScreen from "./cartscreen";
-// import UserScreen from "./protected/userscreen";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-// import ProfileScreen from "../protected/profilescreen";
 import ProtectedRoute from "../protected/protectedroute";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ProductScreen from "./productscreen";
+import SingleProduct from "./singleproduct";
+import { View } from "react-native";
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+
+function ProductsStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="AllProduct"
+        component={ProductScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SingleProduct"
+        component={SingleProduct}
+        options={{
+          title: "Details",
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 function HomeTab() {
   return (
@@ -48,7 +70,7 @@ function HomeTab() {
       />
       <Tab.Screen
         name="Products"
-        component={ProductScreen}
+        component={ProductsStack}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <FontAwesome name="product-hunt" size={24} color={color} />;
@@ -63,7 +85,7 @@ function UnprotectedRoute() {
   return (
     <Drawer.Navigator>
       <Drawer.Screen
-        name="ConfiableHome"
+        name="ComfiableHome"
         component={HomeTab}
         options={{
           headerTitleAlign: "center",

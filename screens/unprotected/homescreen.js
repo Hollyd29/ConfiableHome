@@ -8,12 +8,13 @@ import {
   TextInput,
   View,
 } from "react-native";
-import Button from "./component/button";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { url } from "./utils/urlstorage";
 import { useNavigation } from "@react-navigation/native";
-import LoadingIcon from "./utils/loadingicon";
+import LoadingIcon from "../utils/loadingicon";
+import Button from "../component/button";
+import { url } from "../utils/urlstorage";
 
 function HomeScreen() {
   const [isGettingProduct, setIsGettingProduct] = useState(false);

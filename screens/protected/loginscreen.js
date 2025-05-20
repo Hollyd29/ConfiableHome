@@ -48,8 +48,8 @@ function LoginScreen() {
         visibilityTime: 3000,
         text2Style: { fontSize: 16 },
       });
-      setLogin(loginData);
-      navigation.navigate("Products");
+      // setLogin(loginData);
+      // navigation.navigate("ComfiableHome", { screen: "Products" });
       setIsLoading(false);
     } catch (error) {
       Toast.show({
