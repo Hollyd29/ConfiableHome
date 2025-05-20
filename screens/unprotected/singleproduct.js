@@ -13,10 +13,12 @@ import { useRoute } from "@react-navigation/native";
 import { url } from "../utils/urlstorage";
 import axios from "axios";
 import LoadingIcon from "../utils/loadingicon";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 function SingleProduct() {
   const [singleProduct, setSingleProduct] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
   const navigation = useNavigation();
 
@@ -52,17 +54,37 @@ function SingleProduct() {
         </Pressable>
         <Text style={styles.headerText}>Details</Text>
       </View>
-      {isLoading ? (
-        <LoadingIcon />
-      ) : (
-        <ScrollView>
-          <View style={{ padding: 20 }}>
-            <Image source={{ uri: singleProduct.image }} style={styles.img} />
-            <Text></Text>
-            <Text></Text>
+      <View style={{ padding: 20 }}>
+        {isLoading ? (
+          <View style={styles.icon}>
+            <LoadingIcon />
           </View>
-        </ScrollView>
-      )}
+        ) : (
+          <ScrollView>
+            <Image source={{ uri: singleProduct.image }} style={styles.img} />
+            <Text>{singleProduct.type}</Text>
+            <Text>Brand: {singleProduct.brand}</Text>
+            <Text>$ {singleProduct.price}</Text>
+            <Text>{singleProduct.available}</Text>
+            <Text>review: {singleProduct.reviews}</Text>
+            <View>
+              <View>
+                <Text>Description</Text>
+                <Pressable onPress={() => setIsShow(!isShow)}>
+                  {isShow && <AntDesign name="up" size={24} color="black" />}
+                  {!isShow && <AntDesign name="down" size={24} color="black" />}
+                </Pressable>
+              </View>
+              {isShow && (
+                <View>
+                  <Text>{singleProduct.content}</Text>
+                  <Text>SKU: {singleProduct.sku}</Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        )}
+      </View>
     </View>
   );
 }
@@ -80,6 +102,10 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontWeight: "700",
+  },
+  icon: {
+    alignSelf: "center",
+    marginBlock: "50%",
   },
   img: {
     height: 200,
