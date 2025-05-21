@@ -14,11 +14,14 @@ import { url } from "../utils/urlstorage";
 import axios from "axios";
 import LoadingIcon from "../utils/loadingicon";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Button from "../component/button";
+import Toast from "react-native-toast-message";
 
 function SingleProduct() {
   const [singleProduct, setSingleProduct] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isShow, setIsShow] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
 
   const navigation = useNavigation();
 
@@ -42,6 +45,32 @@ function SingleProduct() {
     }
   }
 
+  async function handleAddToCart() {
+    try {
+      setIsAdding(true);
+      const res = await axios.post(`${url}/addToCart`, { productId: id });
+      console.log(res.data);
+
+      Toast.show({
+        type: "success",
+        text1: "Successful",
+        text2: "Product Add To Cart Successful",
+        visibilityTime: 3000,
+        text2Style: { fontSize: 18 },
+      });
+      setIsAdding(false);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error?.response?.data?.message,
+        visibilityTime: 3000,
+        text2Style: { fontSize: 18 },
+      });
+      setIsAdding(false);
+    }
+  }
+
   useEffect(() => {
     getSingleProduct();
   }, [id]);
@@ -62,13 +91,13 @@ function SingleProduct() {
         ) : (
           <ScrollView>
             <Image source={{ uri: singleProduct.image }} style={styles.img} />
-            <Text>{singleProduct.type}</Text>
-            <Text>Brand: {singleProduct.brand}</Text>
-            <Text>$ {singleProduct.price}</Text>
-            <Text>{singleProduct.available}</Text>
-            <Text>review: {singleProduct.reviews}</Text>
+            <Text style={styles.type}>{singleProduct.type}</Text>
+            <Text style={styles.brand}>Brand: {singleProduct.brand}</Text>
+            <Text style={styles.price}>$ {singleProduct.price}</Text>
+            <Text style={styles.available}>{singleProduct.available}</Text>
+            <Text style={styles.review}>review: {singleProduct.reviews}</Text>
             <View>
-              <View>
+              <View style={styles.descriptCon}>
                 <Text>Description</Text>
                 <Pressable onPress={() => setIsShow(!isShow)}>
                   {isShow && <AntDesign name="up" size={24} color="black" />}
@@ -77,11 +106,17 @@ function SingleProduct() {
               </View>
               {isShow && (
                 <View>
-                  <Text>{singleProduct.content}</Text>
-                  <Text>SKU: {singleProduct.sku}</Text>
+                  <Text style={styles.content}>{singleProduct.content}</Text>
+                  <Text style={styles.sku}>SKU: {singleProduct.sku}</Text>
                 </View>
               )}
             </View>
+            <Button
+              title="Add to cart"
+              btnStyle={styles.btn}
+              btnText={styles.btntext}
+              btnPress={handleAddToCart}
+            />
           </ScrollView>
         )}
       </View>
@@ -111,5 +146,61 @@ const styles = StyleSheet.create({
     height: 200,
     width: "100%",
     borderRadius: 10,
+  },
+  type: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginTop: 10,
+  },
+  brand: {
+    fontWeight: "500",
+    marginTop: 5,
+  },
+  price: {
+    fontSize: 25,
+    fontWeight: "900",
+    marginTop: 10,
+  },
+  available: {
+    fontWeight: "700",
+    marginTop: 5,
+    opacity: 0.6,
+  },
+  review: {
+    fontSize: 18,
+    marginTop: 5,
+  },
+  descriptCon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "#dee2e6",
+    marginTop: 20,
+    borderRadius: 5,
+  },
+  content: {
+    marginTop: 20,
+    fontSize: 16,
+    lineHeight: 25,
+  },
+  sku: {
+    marginTop: 20,
+    fontWeight: "500",
+  },
+  btn: {
+    backgroundColor: "#0077b6",
+    paddingBlock: 8,
+    borderRadius: 10,
+    marginTop: 30,
+    marginBottom: 100,
+  },
+  btntext: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 25,
+    letterSpacing: 3,
+    fontWeight: "600",
   },
 });
