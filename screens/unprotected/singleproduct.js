@@ -16,6 +16,7 @@ import LoadingIcon from "../utils/loadingicon";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Button from "../component/button";
 import Toast from "react-native-toast-message";
+import { getToken } from "../utils/tokenstorage";
 
 function SingleProduct() {
   const [singleProduct, setSingleProduct] = useState([]);
@@ -28,6 +29,10 @@ function SingleProduct() {
   const route = useRoute();
   const id = route.params.productId;
   //   console.log(id);
+
+  const token = getToken();
+
+  //   console.log(getToken());
 
   async function getSingleProduct() {
     try {
@@ -48,8 +53,18 @@ function SingleProduct() {
   async function handleAddToCart() {
     try {
       setIsAdding(true);
-      const res = await axios.post(`${url}/addToCart`, { productId: id });
+      const res = await axios.post(
+        `${url}/addToCart`,
+        { productId: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(res.data);
+
+      console.log(res.data.products);
 
       Toast.show({
         type: "success",
