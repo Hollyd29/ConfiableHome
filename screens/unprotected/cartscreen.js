@@ -30,7 +30,9 @@ function CartScreen() {
 
   const [isId, setIsId] = useState(null);
 
-  const navigation = useNavigation();
+  const [counter, setCounter] = useState(0);
+
+  // const [inStock, setInStock] = useState(false);
 
   async function AllCart() {
     try {
@@ -41,8 +43,14 @@ function CartScreen() {
           Authorization: `Bearer ${token}`,
         },
       });
+      const data = res.data.items;
+      setCart(data);
+      let total = 0;
+      data.forEach((each) => {
+        total += each.counter;
+      });
+      setCounter(total);
       // console.log(res.data.items);
-      setCart(res.data.items);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -153,7 +161,7 @@ function CartScreen() {
 
   return (
     <View style={{ paddingBottom: 30 }}>
-      <Text style={styles.cartCount}>Cart: {cart.length} items </Text>
+      <Text style={styles.cartCount}>Cart: {counter} items </Text>
       {isLoading && !isAdding && !isSubtracting ? (
         <View style={{ alignSelf: "center", marginTop: "50%" }}>
           <LoadingIcon />
@@ -176,7 +184,9 @@ function CartScreen() {
                       source={{ uri: each.item.image }}
                       style={{ height: 100, width: 100 }}
                     />
-                    <Text style={styles.outofstock}>OUT OF STOCK</Text>
+                    {each.item.isInStock === false ? (
+                      <Text style={styles.outofstock}>OUT OF STOCK</Text>
+                    ) : null}
                   </View>
                   <View>
                     <Text style={styles.type}>{each.item.type}</Text>
