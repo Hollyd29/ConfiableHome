@@ -149,7 +149,7 @@ function ProductScreen() {
         </View>
       )}
 
-      <View style={{ backgroundColor: "#edf3ee", paddingBottom: 200 }}>
+      <View style={{ backgroundColor: "#edf3ee", paddingBottom: 100 }}>
         {isLoeading ? (
           <View style={{ alignSelf: "center", marginTop: "50%" }}>
             <LoadingIcon />

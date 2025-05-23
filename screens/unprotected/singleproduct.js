@@ -19,7 +19,7 @@ import Toast from "react-native-toast-message";
 import { getToken } from "../utils/tokenstorage";
 
 function SingleProduct() {
-  const [singleProduct, setSingleProduct] = useState([]);
+  const [singleProduct, setSingleProduct] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isShow, setIsShow] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -29,8 +29,6 @@ function SingleProduct() {
   const route = useRoute();
   const id = route.params.productId;
   //   console.log(id);
-
-  const token = getToken();
 
   //   console.log(getToken());
 
@@ -53,6 +51,7 @@ function SingleProduct() {
   async function handleAddToCart() {
     try {
       setIsAdding(true);
+      const token = await getToken();
       const res = await axios.post(
         `${url}/addToCart`,
         { productId: id },
@@ -62,9 +61,8 @@ function SingleProduct() {
           },
         }
       );
-      console.log(res.data);
 
-      console.log(res.data.products);
+      //   console.log(res.data.products);
 
       Toast.show({
         type: "success",
@@ -105,33 +103,38 @@ function SingleProduct() {
           </View>
         ) : (
           <ScrollView>
-            <Image source={{ uri: singleProduct.image }} style={styles.img} />
-            <Text style={styles.type}>{singleProduct.type}</Text>
-            <Text style={styles.brand}>Brand: {singleProduct.brand}</Text>
-            <Text style={styles.price}>$ {singleProduct.price}</Text>
-            <Text style={styles.available}>{singleProduct.available}</Text>
-            <Text style={styles.review}>review: {singleProduct.reviews}</Text>
             <View>
-              <View style={styles.descriptCon}>
-                <Text>Description</Text>
-                <Pressable onPress={() => setIsShow(!isShow)}>
-                  {isShow && <AntDesign name="up" size={24} color="black" />}
-                  {!isShow && <AntDesign name="down" size={24} color="black" />}
-                </Pressable>
-              </View>
-              {isShow && (
-                <View>
-                  <Text style={styles.content}>{singleProduct.content}</Text>
-                  <Text style={styles.sku}>SKU: {singleProduct.sku}</Text>
+              <Image source={{ uri: singleProduct.image }} style={styles.img} />
+              <Text style={styles.type}>{singleProduct.type}</Text>
+              <Text style={styles.brand}>Brand: {singleProduct.brand}</Text>
+              <Text style={styles.price}>$ {singleProduct.price}</Text>
+              <Text style={styles.available}>{singleProduct.available}</Text>
+              <Text style={styles.review}>review: {singleProduct.reviews}</Text>
+              <View>
+                <View style={styles.descriptCon}>
+                  <Text>Description</Text>
+                  <Pressable onPress={() => setIsShow(!isShow)}>
+                    {isShow && <AntDesign name="up" size={24} color="black" />}
+                    {!isShow && (
+                      <AntDesign name="down" size={24} color="black" />
+                    )}
+                  </Pressable>
                 </View>
-              )}
+                {isShow && (
+                  <View>
+                    <Text style={styles.content}>{singleProduct.content}</Text>
+                    <Text style={styles.sku}>SKU: {singleProduct.sku}</Text>
+                  </View>
+                )}
+              </View>
+              <Button
+                title={isAdding ? "Loading..." : "Add to cart"}
+                btnStyle={styles.btn}
+                btnText={styles.btntext}
+                btnPress={handleAddToCart}
+                disablebtn={isAdding}
+              />
             </View>
-            <Button
-              title="Add to cart"
-              btnStyle={styles.btn}
-              btnText={styles.btntext}
-              btnPress={handleAddToCart}
-            />
           </ScrollView>
         )}
       </View>
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignSelf: "center",
-    marginBlock: "50%",
+    marginVertical: "50%",
   },
   img: {
     height: 200,

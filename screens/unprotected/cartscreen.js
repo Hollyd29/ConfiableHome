@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { url } from "../utils/urlstorage";
 import { getToken, removeToken } from "../utils/tokenstorage";
 
@@ -8,19 +8,17 @@ function CartScreen() {
   const [cart, setCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const token = getToken();
-  console.log(token.then);
-
   async function AllCart() {
     try {
       setIsLoading(true);
+      const token = await getToken();
       const res = await axios.get(`${url}/getCartItems`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
-
+      // console.log(res.data.items);
+      setCart(res.data.items);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -38,6 +36,21 @@ function CartScreen() {
   return (
     <View>
       <Text style={styles.cartCount}>Cart: 2 items </Text>
+      <FlatList
+        data={cart}
+        renderItem={(each) => {
+          return (
+            <View>
+              <View style={styles.itemCon}>
+                <Image
+                  source={{ uri: each.Image }}
+                  style={{ height: 100, width: 100 }}
+                />
+              </View>
+            </View>
+          );
+        }}
+      />
     </View>
   );
 }

@@ -6,6 +6,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import axios from "axios";
 import { url } from "../utils/urlstorage";
 import Toast from "react-native-toast-message";
+import { setToken } from "../utils/tokenstorage";
 
 function LoginScreen() {
   const loginData = {
@@ -48,6 +49,10 @@ function LoginScreen() {
         visibilityTime: 3000,
         text2Style: { fontSize: 16 },
       });
+      setToken(res.data.token);
+
+      // console.log(res.data.token);
+
       setLogin(loginData);
       navigation.navigate("ComfiableHome", { screen: "Products" });
       setIsLoading(false);
