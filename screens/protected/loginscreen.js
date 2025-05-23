@@ -92,7 +92,7 @@ function LoginScreen() {
           </Pressable>
         </View>
         <Button
-          title={isloading ? "Loading..." : "Login"}
+          title={isloading ? "Loading.." : "Login"}
           disablebtn={isloading}
           btnStyle={styles.btn}
           btnText={styles.btntext}

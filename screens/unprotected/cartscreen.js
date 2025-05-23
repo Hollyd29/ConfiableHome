@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { url } from "../utils/urlstorage";
 import { getToken, removeToken } from "../utils/tokenstorage";
+import LoadingIcon from "../utils/loadingicon";
 
 function CartScreen() {
   const [cart, setCart] = useState([]);
@@ -36,33 +37,45 @@ function CartScreen() {
   return (
     <View>
       <Text style={styles.cartCount}>Cart: 2 items </Text>
-      <FlatList
-        data={cart}
-        renderItem={(each) => {
-          // console.log(each);
-
-          return (
-            <View
-              style={{
-                paddingHorizontal: 20,
-                marginTop: 20,
-              }}
-            >
-              <View style={styles.itemCon}>
-                <Image
-                  source={{ uri: each.item.image }}
-                  style={{ height: 100, width: 100 }}
-                />
-                <View>
-                  <Text>{each.item.category}</Text>
-                  <Text>{each.item.brand}</Text>
-                  <Text>able.God</Text>
+      {isLoading ? (
+        <View style={{ alignSelf: "center", marginTop: "50%" }}>
+          <LoadingIcon />
+        </View>
+      ) : (
+        <FlatList
+          data={cart}
+          renderItem={(each) => {
+            // console.log(each);
+            return (
+              <View
+                style={{
+                  paddingHorizontal: 20,
+                  marginTop: 20,
+                }}
+              >
+                <View style={styles.itemCon}>
+                  <View style={{ position: "relative" }}>
+                    <Image
+                      source={{ uri: each.item.image }}
+                      style={{ height: 100, width: 100 }}
+                    />
+                    <Text style={styles.outofstock}>OUT OF STOCK</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.type}>{each.item.type}</Text>
+                    <Text style={styles.brand}>{each.item.brand}</Text>
+                    <Text style={styles.price}>$ {each.item.price}</Text>
+                    <Text style={styles.available}>{each.item.available}</Text>
+                  </View>
+                </View>
+                <View style={styles.countCon}>
+                  <View></View>
                 </View>
               </View>
-            </View>
-          );
-        }}
-      />
+            );
+          }}
+        />
+      )}
     </View>
   );
 }
@@ -81,5 +94,27 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     gap: 10,
+  },
+  outofstock: {
+    fontSize: 12,
+    color: "#d90429",
+    padding: 1,
+    backgroundColor: "#ced4da",
+    textAlign: "center",
+    position: "absolute",
+    bottom: 5,
+    width: 100,
+    borderRadius: 25,
+  },
+  type: {
+    fontWeight: "500",
+    fontSize: 17,
+  },
+  price: {
+    fontWeight: "500",
+    fontSize: 20,
+  },
+  available: {
+    opacity: 0.6,
   },
 });
