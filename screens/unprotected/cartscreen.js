@@ -39,13 +39,25 @@ function CartScreen() {
       <FlatList
         data={cart}
         renderItem={(each) => {
+          // console.log(each);
+
           return (
-            <View>
+            <View
+              style={{
+                paddingHorizontal: 20,
+                marginTop: 20,
+              }}
+            >
               <View style={styles.itemCon}>
                 <Image
-                  source={{ uri: each.Image }}
+                  source={{ uri: each.item.image }}
                   style={{ height: 100, width: 100 }}
                 />
+                <View>
+                  <Text>{each.item.category}</Text>
+                  <Text>{each.item.brand}</Text>
+                  <Text>able.God</Text>
+                </View>
               </View>
             </View>
           );
@@ -64,5 +76,10 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     paddingBlock: 10,
     backgroundColor: "#ced4da",
+  },
+  itemCon: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
   },
 });
