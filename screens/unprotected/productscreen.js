@@ -14,12 +14,36 @@ import LoadingIcon from "../utils/loadingicon";
 import Button from "../component/button";
 import { url } from "../utils/urlstorage";
 import { useNavigation } from "@react-navigation/native";
+import { Dropdown } from "react-native-element-dropdown";
 
+const sort = [
+  {
+    value: "price",
+    label: "Lowest",
+    id: 1,
+  },
+  {
+    value: "-price",
+    label: "Highest",
+    id: 2,
+  },
+  {
+    value: "type",
+    label: "A-Z",
+    id: 3,
+  },
+  {
+    value: "-type",
+    label: "Z-A",
+    id: 2,
+  },
+];
 function ProductScreen() {
   const [isShow, setIsShow] = useState(false);
   const [allProduct, setAllProduct] = useState([]);
   const [isLoeading, setIsLoading] = useState(false);
   const [pickProduct, setPickProduct] = useState([]);
+  const [inSort, setInSort] = useState("");
 
   const navigation = useNavigation();
 
@@ -47,7 +71,7 @@ function ProductScreen() {
   async function getAllProduct() {
     try {
       setIsLoading(true);
-      const res = await axios.get(`${url}/products`);
+      const res = await axios.get(`${url}/products?sort=${inSort}`);
       setAllProduct(res.data.products);
       // console.log(res.data.products);
 
@@ -59,11 +83,15 @@ function ProductScreen() {
 
   useEffect(() => {
     getAllProduct();
-  }, []);
+  }, [inSort]);
 
   useEffect(() => {
     setPickProduct(allProduct);
   }, [allProduct]);
+
+  // useEffect(() => {
+  //   getSort();
+  // }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -145,7 +173,25 @@ function ProductScreen() {
       ) : (
         <View style={{ marginLeft: 10 }}>
           <Text>{pickProduct.length} products found</Text>
-          <Text>Sort By:</Text>
+          <View style={styles.sortCon}>
+            <Text>Sort By:</Text>
+            <Dropdown
+              data={sort}
+              labelField={"label"}
+              valueField={"value"}
+              onChange={(item) => {
+                console.log(item.value);
+
+                setInSort(item.value);
+              }}
+              value={inSort}
+              itemTextStyle={{ margin: -10 }}
+              placeholder="Sort Product"
+              containerStyle={{ borderWidth: 10 }}
+              placeholderStyle={{}}
+              style={styles.dropDownStyle}
+            />
+          </View>
         </View>
       )}
 
@@ -262,6 +308,19 @@ const styles = StyleSheet.create({
     color: "#ffff",
     fontSize: 20,
     fontWeight: "600",
+  },
+  sortCon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+  dropDownStyle: {
+    borderWidth: 2,
+    height: 25,
+    width: 150,
+    padding: 5,
+    borderRadius: 5,
   },
   allCompany: {
     borderWidth: 1,
