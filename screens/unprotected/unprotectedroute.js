@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductScreen from "./productscreen";
 import SingleProduct from "./singleproduct";
 import { View } from "react-native";
+import UserDropdown from "../component/userDropdown";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -83,7 +84,7 @@ function HomeTab() {
 
 function UnprotectedRoute() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator drawerContent={(props) => <UserDropdown {...props} />}>
       <Drawer.Screen
         name="ComfiableHome"
         component={HomeTab}
@@ -104,7 +105,7 @@ function UnprotectedRoute() {
           },
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="User"
         component={ProtectedRoute}
         options={({ route }) => {
@@ -116,7 +117,7 @@ function UnprotectedRoute() {
             },
           };
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 }
