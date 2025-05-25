@@ -105,7 +105,7 @@ function UnprotectedRoute() {
           },
         }}
       />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="User"
         component={ProtectedRoute}
         options={({ route }) => {
@@ -115,9 +115,10 @@ function UnprotectedRoute() {
             drawerIcon: () => {
               return <Entypo name="users" size={24} color="black" />;
             },
+            drawerItemStyle: { display: "none" },
           };
         }}
-      /> */}
+      />
     </Drawer.Navigator>
   );
 }

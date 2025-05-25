@@ -5,9 +5,12 @@ import {
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
+import { useNavigation } from "@react-navigation/native";
 
 function UserDropdown({ ...props }) {
   const [isDropdown, setIsDropdown] = useState(false);
+
+  const navigation = useNavigation();
 
   return (
     <DrawerContentScrollView {...props}>
@@ -17,9 +20,22 @@ function UserDropdown({ ...props }) {
 
       <View style={styles.userCon}>
         <Entypo name="users" size={24} color="black" />
-        <Text onPress={() => {}}>User</Text>
+        <Text
+          onPress={() => {
+            setIsDropdown(true);
+          }}
+        >
+          User
+        </Text>
       </View>
-      {isDropdown && <Text>Dropdown</Text>}
+      {isDropdown && (
+        <View style={styles.dropCon}>
+          <Text style={styles.text}>Orders</Text>
+          <Text style={styles.text} onPress={() => navigation.navigate("User")}>
+            Login
+          </Text>
+        </View>
+      )}
     </DrawerContentScrollView>
   );
 }
@@ -34,5 +50,19 @@ const styles = StyleSheet.create({
     gap: 10,
     marginLeft: 19,
     marginTop: 5,
+  },
+  dropCon: {
+    padding: 10,
+    marginTop: 5,
+    backgroundColor: "#e3f2fd",
+    display: "flex",
+    gap: 10,
+    marginLeft: 50,
+    width: 120,
+    borderRadius: 10,
+  },
+  text: {
+    fontSize: 18,
+    textAlign: "center",
   },
 });
