@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import LoadingIcon from "../utils/loadingicon";
 import Button from "../component/button";
@@ -44,6 +44,10 @@ function ProductScreen() {
   const [isLoeading, setIsLoading] = useState(false);
   const [pickProduct, setPickProduct] = useState([]);
   const [inSort, setInSort] = useState("");
+  const [search, setSearch] = useState("");
+  const [debounceSearch, setDebounceSearch] = useState("");
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const navigation = useNavigation();
 
@@ -68,10 +72,18 @@ function ProductScreen() {
     setIsShow(!isShow);
   }
 
+  async function onRefresh() {
+    setRefreshing(true);
+    await getAllProduct();
+    setRefreshing(false);
+  }
+
   async function getAllProduct() {
     try {
       setIsLoading(true);
-      const res = await axios.get(`${url}/products?sort=${inSort}`);
+      const res = await axios.get(
+        `${url}/products?sort=${inSort}&search=${debounceSearch}`
+      );
       setAllProduct(res.data.products);
       // console.log(res.data.products);
 
@@ -81,13 +93,22 @@ function ProductScreen() {
     }
   }
 
+  // For delaying search for 500ms
   useEffect(() => {
-    getAllProduct();
-  }, [inSort]);
+    const timer = setTimeout(() => {
+      setDebounceSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
   useEffect(() => {
     setPickProduct(allProduct);
   }, [allProduct]);
+
+  useEffect(() => {
+    getAllProduct();
+  }, [inSort, debounceSearch]);
 
   // useEffect(() => {
   //   getSort();
@@ -97,7 +118,12 @@ function ProductScreen() {
     <View style={{ flex: 1 }}>
       <View style={styles.headerCon}>
         <View style={styles.searchCon}>
-          <TextInput placeholder="Search" style={styles.search} />
+          <TextInput
+            placeholder="Search"
+            style={styles.search}
+            value={search}
+            onChangeText={(text) => setSearch(text)}
+          />
           <Button
             title="Search"
             btnStyle={styles.searchBtn}
@@ -180,8 +206,7 @@ function ProductScreen() {
               labelField={"label"}
               valueField={"value"}
               onChange={(item) => {
-                console.log(item.value);
-
+                // console.log(item.value);
                 setInSort(item.value);
               }}
               value={inSort}
@@ -203,6 +228,8 @@ function ProductScreen() {
         ) : (
           <FlatList
             data={pickProduct}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
             renderItem={(each) => {
               // console.log(each);
 

@@ -22,7 +22,7 @@ function UserDropdown({ ...props }) {
         <Entypo name="users" size={24} color="black" />
         <Text
           onPress={() => {
-            setIsDropdown(true);
+            setIsDropdown(!isDropdown);
           }}
         >
           User
