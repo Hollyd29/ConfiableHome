@@ -3,10 +3,7 @@ import Button from "../component/button";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
-import axios from "axios";
-import { url } from "../utils/urlstorage";
-import Toast from "react-native-toast-message";
-import { setToken } from "../utils/tokenstorage";
+import { handleAuthLogin } from "../../actions/auth.action";
 
 function LoginScreen() {
   const loginData = {
@@ -27,46 +24,17 @@ function LoginScreen() {
     }));
   }
 
-  async function handleLogin() {
-    if (!email || !password) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "No field can be empty",
-        visibilityTime: 3000,
-        text2Style: { fontSize: 16 },
-      });
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const res = await axios.post(`${url}/auth/login`, login);
-      Toast.show({
-        type: "success",
-        text1: "Successful",
-        text2: "Login Successful",
-        visibilityTime: 3000,
-        text2Style: { fontSize: 16 },
-      });
-      setToken(res.data.token);
-
-      // console.log(res.data.token);
-
-      setLogin(loginData);
-      navigation.navigate("ComfiableHome", { screen: "Products" });
-      setIsLoading(false);
-    } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: error.response.data.message || "something went wrong",
-        visibilityTime: 3000,
-        text2Style: { fontSize: 16 },
-      });
-      setIsLoading(false);
-    }
-  }
+  const handleLogin = async () => {
+    await handleAuthLogin(
+      login,
+      email,
+      password,
+      setIsLoading,
+      setLogin,
+      loginData,
+      navigation
+    );
+  };
 
   return (
     <View>

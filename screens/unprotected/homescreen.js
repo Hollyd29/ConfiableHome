@@ -26,8 +26,10 @@ function HomeScreen() {
   const [emailInput, setEmailInput] = useState("");
 
   const { width } = useWindowDimensions();
+  // console.log(width);
 
   const headerContentSize = screenWidth(width, 375, 47, 35);
+  const homeContentPadding = screenWidth(width, 600, 40, 0);
 
   // console.log(getThreeProducts);
 
@@ -41,6 +43,12 @@ function HomeScreen() {
       for (let i = 0; i < 3; i++) {
         const randomNumber = Math.floor(Math.random() * data.length);
         const randomProduct = data[randomNumber];
+        const isContain = newData.some(
+          (product) => product._id === randomProduct._id
+        );
+        if (isContain) {
+          return;
+        }
         newData.push(randomProduct);
         // newData = randomProduct;
       }
@@ -63,7 +71,13 @@ function HomeScreen() {
 
   // const newData = getThreeProducts.slice(0, 3);
   return (
-    <View style={{ backgroundColor: "#caf0f8", flex: 1 }}>
+    <View
+      style={{
+        backgroundColor: "#caf0f8",
+        flex: 1,
+        paddingHorizontal: homeContentPadding,
+      }}
+    >
       <ScrollView>
         <View style={styles.topCon}>
           <Text style={[styles.title, { fontSize: headerContentSize }]}>

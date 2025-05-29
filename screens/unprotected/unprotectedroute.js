@@ -50,7 +50,7 @@ function HomeTab() {
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#0077b6",
         tabBarLabelStyle: { fontSize: 15, paddingBottom: 20 },
-        tabBarStyle: { height: isAndroid ? 90 : 60 },
+        tabBarStyle: { height: isAndroid ? 80 : 95 },
         headerShown: false,
       }}
     >
