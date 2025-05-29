@@ -4,6 +4,9 @@ import axios from "axios";
 import { url } from "../screens/utils/urlstorage";
 
 export const loginUser = async (login) => {
-  const res = await axios.post(`${url}/auth/login`, login);
-  return res;
+  return await axios.post(`${url}/auth/login`, login);
+};
+
+export const registerUser = async (register) => {
+  return await axios.post(`${url}/auth/register`, register);
 };

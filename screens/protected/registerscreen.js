@@ -2,10 +2,8 @@ import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "../component/button";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import axios from "axios";
-import { url } from "../utils/urlstorage";
 import Entypo from "@expo/vector-icons/Entypo";
-import Toast from "react-native-toast-message";
+import { handleAuthRegister } from "../../actions/auth.action";
 
 function RegisterScreen() {
   const registerData = {
@@ -13,7 +11,9 @@ function RegisterScreen() {
     email: "",
     password: "",
   };
+
   const [register, setRegister] = useState(registerData);
+
   const [isloading, setIsLoading] = useState(false);
   const [isShow, setIsShow] = useState(false);
 
@@ -28,42 +28,18 @@ function RegisterScreen() {
     }));
   }
 
-  async function handleRegister() {
-    if (!username || !email || !password) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "No field can be empty",
-        visibilityTime: 3000,
-        text2Style: { fontSize: 16 },
-      });
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      await axios.post(`${url}/auth/register`, register);
-      Toast.show({
-        type: "success",
-        text1: "Successful",
-        text2: "Registration Successful",
-        visibilityTime: 3000,
-        text2Style: { fontSize: 16 },
-      });
-      setRegister(registerData);
-      navigation.navigate("Login");
-      setIsLoading(false);
-    } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: error.response.data.message || "something went wrong",
-        visibilityTime: 3000,
-        text2Style: { fontSize: 16 },
-      });
-      setIsLoading(false);
-    }
-  }
+  const handleRegister = async () => {
+    await handleAuthRegister(
+      username,
+      email,
+      password,
+      setIsLoading,
+      register,
+      setRegister,
+      registerData,
+      navigation
+    );
+  };
 
   return (
     <View>
