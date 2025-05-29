@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  useWindowDimensions,
   View,
 } from "react-native";
 
@@ -15,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import LoadingIcon from "../utils/loadingicon";
 import Button from "../component/button";
 import { url } from "../utils/urlstorage";
+import screenWidth from "../utils/manageScreenWidth";
 
 function HomeScreen() {
   const [isGettingProduct, setIsGettingProduct] = useState(false);
@@ -22,6 +24,10 @@ function HomeScreen() {
   const [isShowMission, setIsShowMission] = useState(false);
   const [isShowVission, setIsShowVission] = useState(false);
   const [emailInput, setEmailInput] = useState("");
+
+  const { width } = useWindowDimensions();
+
+  const headerContentSize = screenWidth(width, 375, 47, 35);
 
   // console.log(getThreeProducts);
 
@@ -60,7 +66,9 @@ function HomeScreen() {
     <View style={{ backgroundColor: "#caf0f8", flex: 1 }}>
       <ScrollView>
         <View style={styles.topCon}>
-          <Text style={styles.title}>Design Your Comfort Zone</Text>
+          <Text style={[styles.title, { fontSize: headerContentSize }]}>
+            Design Your Comfort Zone
+          </Text>
           <Text style={styles.titleText}>
             Welcome to our online sanctuary where style meets serenity –
             introducing{" "}
@@ -224,7 +232,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 47,
+    // fontSize: 47,
     fontWeight: 900,
     textAlign: "center",
     marginBlock: 10,

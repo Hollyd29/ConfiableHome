@@ -12,12 +12,15 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductScreen from "./productscreen";
 import SingleProduct from "./singleproduct";
-import { View } from "react-native";
+import { Platform, useWindowDimensions, View } from "react-native";
 import UserDropdown from "../component/userDropdown";
+import screenWidth from "../utils/manageScreenWidth";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+
+const isAndroid = Platform.OS === "android";
 
 function ProductsStack() {
   return (
@@ -46,8 +49,8 @@ function HomeTab() {
         tabBarActiveBackgroundColor: "#0077b6",
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#0077b6",
-        tabBarLabelStyle: { fontSize: 15 },
-        // tabBarStyle: { height: 50 },
+        tabBarLabelStyle: { fontSize: 15, paddingBottom: 20 },
+        tabBarStyle: { height: isAndroid ? 90 : 60 },
         headerShown: false,
       }}
     >
@@ -83,6 +86,10 @@ function HomeTab() {
 }
 
 function UnprotectedRoute() {
+  const { width } = useWindowDimensions();
+
+  const bigScreenValue = screenWidth(width, 375, 30, 25);
+
   return (
     <Drawer.Navigator drawerContent={(props) => <UserDropdown {...props} />}>
       <Drawer.Screen
@@ -91,7 +98,7 @@ function UnprotectedRoute() {
         options={{
           headerTitleAlign: "center",
           headerTintColor: "#0077b6",
-          headerTitleStyle: { fontSize: 30 },
+          headerTitleStyle: { fontSize: bigScreenValue },
           drawerLabelStyle: { fontSize: 30, paddingTop: 10 },
           // drawerInactiveTintColor: "#0077b6",
         }}
