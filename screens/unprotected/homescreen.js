@@ -11,12 +11,11 @@ import {
 } from "react-native";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import LoadingIcon from "../utils/loadingicon";
 import Button from "../component/button";
-import { url } from "../utils/urlstorage";
 import screenWidth from "../utils/manageScreenWidth";
+import { getProduct } from "../../actions/product.action";
 
 function HomeScreen() {
   const [isGettingProduct, setIsGettingProduct] = useState(false);
@@ -33,38 +32,12 @@ function HomeScreen() {
 
   // console.log(getThreeProducts);
 
-  async function getProduct() {
-    try {
-      setIsGettingProduct(true);
-      const res = await axios.get(`${url}/products`);
-      const data = res.data.products;
-
-      let newData = [];
-      for (let i = 0; i < 3; i++) {
-        const randomNumber = Math.floor(Math.random() * data.length);
-        const randomProduct = data[randomNumber];
-        const isContain = newData.some(
-          (product) => product._id === randomProduct._id
-        );
-        if (isContain) {
-          return;
-        }
-        newData.push(randomProduct);
-        // newData = randomProduct;
-      }
-      // console.log(newData);
-
-      setGetThreeProducts(newData);
-
-      setIsGettingProduct(false);
-    } catch (error) {
-      setIsGettingProduct(false);
-      console.log(error.response.data.message);
-    }
+  async function getHomeProduct() {
+    await getProduct(setIsGettingProduct, setGetThreeProducts);
   }
 
   useEffect(() => {
-    getProduct();
+    getHomeProduct();
   }, []);
 
   const navigation = useNavigation();

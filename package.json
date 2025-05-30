@@ -19,6 +19,7 @@
     "expo-status-bar": "~2.2.3",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
+    "loglevel": "^1.9.2",
     "react": "19.0.0",
     "react-native": "0.79.2",
     "react-native-element-dropdown": "^2.12.4",
